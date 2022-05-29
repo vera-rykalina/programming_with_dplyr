@@ -63,6 +63,7 @@ imf_data %>%
 imf_data_1 <- imf_data %>% 
   select(country, year, matches("perc|rate"))
 
+# alternative way with contains()
 imf_data_2 <- imf_data %>% 
   select(country, year, contains(c("perc","rate")))
 combi <-  cbind(imf_data_1, imf_data_2)
@@ -75,3 +76,31 @@ imf_data %>%
 # Pick country, year, and columns ending with "gdp" using a regular expression instead of using ends_with().
 imf_data %>% 
   select(country, year, matches("gdp$"))
+
+# 2. Providing relocation assistance ####
+# everything() ####
+# Remind yourself of the order of the imf_data column names.
+names(imf_data)
+
+# Create reordered_imf by reordering the columns of imf_data so that all columns ending with "gdp" are after year using select(), regular expressions, and everything(). 
+
+reordered_imf <- imf_data %>% 
+  select(iso:year,
+         matches("gdp$"),
+         everything())
+
+# Then, print the names() of reordered_imf.
+  names(reordered_imf)
+
+# last_col() ####
+# Choose columns iso through year. Then, match for columns starting with "gov" using regular expressions. Finally, have your remaining columns ordered as gdp_in_billions_of_usd to the last column.
+  imf_data %>% 
+    select(iso:year, matches("^gov"),
+      gdp_in_billions_of_usd:last_col()) %>% 
+    names()
+
+# relocate() ####
+# The relocate() function is helpful when you want to keep all of the columns in your data but move some of them around. select() can do this too, but it works better when a subset of columns is needed instead.
+  
+
+  
