@@ -112,3 +112,31 @@ glimpse(relocated_cpi)
 # Shift population_in_millions to be before consumer_price_index in relocated_cpi.
 relocated_cpi %>% 
   relocate(population_in_millions, .before=consumer_price_index) %>% names()
+
+# across() within mutate() ####
+# You can use the across() function inside of mutate() to specify which columns you'd like to work with, which function to apply to these columns, and any text that you'd like to add on to the names of the new columns.
+
+# Multiply all columns that contain "as_perc_gdp" by gdp_in_billions_of_usd, keeping only the columns used in the analysis, and assign this result to imf_new_cols.
+imf_new_cols <- imf_data %>% 
+  mutate(across(.cols = contains("as_perc_gdp"), 
+                .fns = ~ .x * gdp_in_billions_of_usd),
+                .keep="used") 
+imf_new_cols
+
+# Replace _as_perc_gdp with empty string in tibble names
+names(imf_new_cols) <- sub(
+                  pattern="_as_perc_gdp",
+                  replace="",
+                  x=names(imf_new_cols))
+# Display tibble with new names
+names(imf_new_cols)
+
+# across() within summarize() ####
+# Keep only rows corresponding to Bolivia. Go across all columns containing "perc". Find the minimum value for each of these columns. Add "min_" to the beginning of each of the column names.
+imf_data %>% 
+  filter(country=="Bolivia") %>% 
+  summarize(across(.cols=contains("perc"), 
+                  .fns=min, .names="min_{.col}")) %>% 
+  pivot_longer(cols = everything(), 
+               names_to="Purpose", values_to = "Minimum")
+
