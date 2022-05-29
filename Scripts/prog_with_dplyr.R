@@ -140,3 +140,10 @@ imf_data %>%
   pivot_longer(cols = everything(), 
                names_to="Purpose", values_to = "Minimum")
 
+# across() with count() ####
+# The count() function also works with across() to provide the number of rows matching each combination of the variables specified.
+# count() across character class columns and then arrange the count tibble with count decreasing.
+
+imf_data %>% 
+  count(across(.cols=where(is.character)), sort=TRUE)
+
