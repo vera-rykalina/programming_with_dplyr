@@ -45,3 +45,15 @@ imf_data %>%
 # Return year, country, and those columns in imf_data that conclude with "change".
 imf_data %>% 
   select(year, country, ends_with("change"))
+
+# contains() ####
+# looks for some string
+# Pick country name, year, and columns with the string "gdp" in their name.
+imf_data %>% 
+  select(country, year, contains("gdp")) %>% 
+  colnames()
+
+# Pick country, year, and columns with names matching "as_perc" to identify those corresponding to percentages of GDP.
+imf_data %>% 
+  select(country, year, contains("as_perc")) %>% 
+  colnames()
