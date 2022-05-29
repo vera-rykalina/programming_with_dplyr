@@ -57,3 +57,21 @@ imf_data %>%
 imf_data %>% 
   select(country, year, contains("as_perc")) %>% 
   colnames()
+
+# matches() ####
+# Pick country, year, and columns that have "perc" or "rate" in their names.
+imf_data_1 <- imf_data %>% 
+  select(country, year, matches("perc|rate"))
+
+imf_data_2 <- imf_data %>% 
+  select(country, year, contains(c("perc","rate")))
+combi <-  cbind(imf_data_1, imf_data_2)
+head(combi)
+
+# Pick country, year, and columns that start with "gov" using a regular expression instead of using starts_with().
+imf_data %>% 
+  select(country, year, matches("^gov"))
+
+# Pick country, year, and columns ending with "gdp" using a regular expression instead of using ends_with().
+imf_data %>% 
+  select(country, year, matches("gdp$"))
