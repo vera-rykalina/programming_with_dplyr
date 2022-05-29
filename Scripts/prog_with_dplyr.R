@@ -147,3 +147,14 @@ imf_data %>%
 imf_data %>% 
   count(across(.cols=where(is.character)), sort=TRUE)
 
+# rowwise() and c_across() ####
+# rowwise() can be a handy tool in your dplyr programming toolbox when combined with c_across(). Together, they allow you to perform calculations across different variables on each row. For example, this can be useful for counting missing values across each row for chosen variables.
+
+# Set the pipeline up for calculations across each row. Create a column num_missing that contains each row's number of missing values in the columns gdp_in_billions_of_usd through to the last column in imf_data. Sort the results by number of missing entries in decreasing order.
+imf_data %>% 
+  rowwise() %>% 
+  mutate(num_missing = sum(is.na(
+    c_across(gdp_in_billions_of_usd:last_col()))
+  )) %>% 
+  select(country:year, num_missing) %>% 
+  arrange(desc(num_missing)) 
