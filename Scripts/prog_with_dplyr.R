@@ -102,5 +102,13 @@ reordered_imf <- imf_data %>%
 # relocate() ####
 # The relocate() function is helpful when you want to keep all of the columns in your data but move some of them around. select() can do this too, but it works better when a subset of columns is needed instead.
   
+# Move the consumer_price_index column to appear after usd_conversion_rate and assign to relocated_cpi.
+relocated_cpi <- imf_data %>% 
+    relocate(consumer_price_index, 
+             .after=usd_conversion_rate)
+# Then, take a glimpse() at relocated_cpi.
+glimpse(relocated_cpi)
 
-  
+# Shift population_in_millions to be before consumer_price_index in relocated_cpi.
+relocated_cpi %>% 
+  relocate(population_in_millions, .before=consumer_price_index) %>% names()
