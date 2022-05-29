@@ -19,3 +19,10 @@ countries_vector <- c("Austria", "Argentina", "Bangladesh", "Belize", "New Zeala
                                         
 subsetted_imf <- selected_imf %>% filter(country %in% countries_vector)
   
+# Calculate the median gdp_in_billions as median_gdp across the years, grouped by each country. Then calculate the median gdp_in_billions as median_gdp across the years, grouped by each country.
+subsetted_imf %>% 
+  mutate(gdp_in_billions = gdp_in_billions_of_usd / 
+           usd_conversion_rate) %>% 
+  group_by(country) %>% 
+  summarise(median_gdp=median(gdp_in_billions)) 
+# %>% pivot_wider(names_from=country, values_from = median_gdp)
