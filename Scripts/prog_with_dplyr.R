@@ -158,3 +158,21 @@ imf_data %>%
   )) %>% 
   select(country:year, num_missing) %>% 
   arrange(desc(num_missing)) 
+
+# if_any() and if_all() ####
+# You can use the if_any() and if_all() functions with select() helper verbs to check for conditions being met across any or all columns. 
+# if_any -> or, if_all -> and
+# Recall the between() function in dplyr can be useful for specifying a range of values (from one to another).
+
+# Choose rows with negative values in any column names ending with "perc_change".
+imf_data %>%
+  filter(if_any(.cols = matches("perc_change$"), 
+                .fns = ~ .x < 0)) %>% 
+  select(country, year, ends_with("perc_change"))
+
+# Choose rows where both import and export percentages have remained stable from the previous year (between -1% and 1%).
+imf_data %>%
+  filter(if_all(
+    .cols=matches("perc_change$"),
+    .fns = ~ between(.x, -1, 1))) %>%
+  select(country, year, ends_with("perc_change"))
