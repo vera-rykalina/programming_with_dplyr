@@ -178,3 +178,24 @@ imf_data %>%
   select(country, year, ends_with("perc_change"))
 
 # 3. Set Theory Claus and The North Pole ####
+# Subseting data
+imf_subset <- imf_data %>% 
+  select(iso, country, year, population_in_millions)
+
+asia_wb <- world_bank_data %>% 
+  filter(continent == "Asia") %>% 
+  select(iso, country, year, contains(c("ferti", "college")))
+
+# Return all the rows in asia_wb and only rows in imf_subset with matching key values.
+
+asia_wb %>% 
+  left_join(imf_subset)
+
+# Return only the rows with matching key values in both asia_wb and imf_subset.
+
+asia_wb %>% 
+  inner_join(imf_subset)
+
+# Return those rows in asia_wb that do not have matching key values in imf_subset.
+asia_wb %>% 
+  anti_join(imf_subset)
