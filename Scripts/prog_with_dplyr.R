@@ -199,3 +199,22 @@ asia_wb %>%
 # Return those rows in asia_wb that do not have matching key values in imf_subset.
 asia_wb %>% 
   anti_join(imf_subset)
+
+# Preparations
+suspect_isos <- c("KOR","BRN","IRN")
+
+# Find distinct combinations of iso and country in asia_wb (assign to asia_wb_combos) and in imf_subset (assign to imf_combos).
+asia_wb_combos <- asia_wb %>% distinct(iso, country)
+imf_combos <- imf_subset %>% distinct(iso, country)
+
+# Perform an anti join with asia_wb_combos on the left and imf_combos on the right.
+asia_wb_combos %>% 
+  anti_join(imf_combos )
+
+# Compare the country names of the suspect iso codes in both tibbles by filtering imf_subset and asia_wb for iso codes in suspect_isos and then look for distinct iso and country combinations.
+imf_subset %>% 
+  filter(iso %in% suspect_isos) %>%
+  distinct(iso, country)
+asia_wb %>% 
+  filter(iso %in% suspect_isos) %>%
+  distinct(iso, country)
